@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Vanilla Redux
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Learning Vanilla-Redux and React-Redux
 
-## Available Scripts
+## Vanilla Redux
 
-In the project directory, you can run:
+Redux는 React를 위한 것이 아니다.
 
-### `npm start`
+### Redux 설치
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+npm install redux
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<br>
 
-### `npm test`
+### import Redux
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+import { store } from 'redux';
+```
 
-### `npm run build`
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Create Store
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+const store = createStore(reducer);
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<br>
 
-### `npm run eject`
+### Create Reducer
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+const reducer = (state = [], action) => {
+  switch (action.type) {
+    case ADD_TODO:
+      return [...state, { text: action.text, id: action.id }];
+    case DELETE_TODO:
+      return state.filter((todo) => todo.id !== action.id);
+    default:
+      return state;
+  }
+};
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`createStore()`를 하기 위해서는 `reducer`가 필요하다.  
+`reducer`는 `state`와 `action`을 매개변수로 받을 수 있다.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`reducer`는 `state`를 `return`한다.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<br>
 
-## Learn More
+### Dispatch
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+store.dispatch({ type: ADD_TODO, text: todo, id: Date.now() });
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`reducer`의 `action`을 일으키는 함수이다.  
+`dispatch`의 매개변수는 `object` 형식으로 작성해야 한다.
 
-### Code Splitting
+<br>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Subscribe
 
-### Analyzing the Bundle Size
+```javascript
+store.subscribe(paintToDos);
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+`state`의 변화를 감지하는 함수이다.  
+`state`의 변화가 일어났을 때 `()` 안에 있는 함수를 실행한다.
